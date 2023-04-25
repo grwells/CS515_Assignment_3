@@ -10,7 +10,7 @@ def pretty_print_transitions(transition_table):
 
     header_str = '  |'
     for i in range(len(transition_table[0])):
-        header_str = header_str + '{:^4}'.format(i)
+        header_str = header_str + '{:^10}'.format(i)
 
     border = '-' * len(header_str)
 
@@ -21,7 +21,7 @@ def pretty_print_transitions(transition_table):
     for i in range(side_len):
         print(i, '|', end='')
         for k in range(side_len):
-            print('{:^4}'.format(transition_table[i][k]), end='')
+            print('{:10.4f}'.format(transition_table[i][k]), end='')
 
         print()
 
@@ -36,7 +36,7 @@ def pretty_print_emissions(emission_table):
 
     header_str = '  |'
     for i in range(state_len):
-        header_str = header_str + '{:^4}'.format(i)
+        header_str = header_str + '{:^10}'.format(i)
 
     border = '-' * len(header_str)
 
@@ -47,7 +47,7 @@ def pretty_print_emissions(emission_table):
         print(key, '|', end='')        
 
         for i in range(state_len):
-            print('{:^4}'.format(emission_table[i][key]), end='')
+            print('{:10.4f}'.format(emission_table[i][key]), end='')
 
         print()
     
@@ -132,17 +132,70 @@ def count_observations(paired_lines, num_states):
 
             prev_state = curr_state
 
-    print('emission table\n', emission_table)
-    print('transition matrix\n', transition_matrix)
-    print('TRANSITIONS')
-    pretty_print_transitions(transition_matrix)
-    print()
-    print('EMISSIONS')
-    pretty_print_emissions(emission_table)
+    #print('emission table\n', emission_table)
+    #print('transition matrix\n', transition_matrix)
+
+    return emission_table, transition_matrix
+
+
+def calculate_emission_probabilities(emissions):
+    # calculate probabilities for emission
+    #   sum all observations for each state
+    #   then divide every observation by total observations
+    num_states = len(emissions)
+    total_observations = [0 for i in range(num_states)]
+
+    for i in range(num_states):
+        keys = emissions[i].keys()
+
+        for symbol in keys:
+            total_observations[i] += emissions[i][symbol]
+
+        # calculate probability
+        for symbol in keys:
+            emissions[i][symbol] = (emissions[i][symbol])/total_observations[i]
+        
+
+    return emissions
+
+
+def calculate_transition_probabilities(transitions):
+    # calculate probabilities for emission
+    #   sum all observations for each state
+    #   then divide every observation by total observations
+    num_states = len(transitions)
+    total_observations = 0
+
+    for i in range(num_states):
+        for k in range(num_states):
+            total_observations += transitions[i][k]
+
+    # calculate probability
+    for i in range(num_states):
+        for k in range(num_states):
+            transitions[i][k] = (transitions[i][k])/total_observations
+        
+    return transitions
 
 
 if __name__ == '__main__':
     print('readng emission file')
     paired_line_list = read_emission_file('../data/DataFile2.txt')
 
-    count_observations(paired_line_list, 3)
+    emissions, transitions = count_observations(paired_line_list, 3)
+    '''
+    print('EMISSIONS')
+    pretty_print_emissions(emissions)
+    print()
+    print('TRANSITIONS')
+    pretty_print_transitions(transitions)
+    '''
+    em_prob = calculate_emission_probabilities(emissions)
+    tran_prob = calculate_transition_probabilities(transitions)
+
+    print()
+    print('EMISSIONS')
+    pretty_print_emissions(em_prob)
+    print()
+    print('TRANSITIONS')
+    pretty_print_transitions(tran_prob)
