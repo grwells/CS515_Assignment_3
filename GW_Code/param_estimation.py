@@ -106,8 +106,6 @@ def count_observations(paired_lines, num_states):
         genome = pair[0]
         state_path = pair[1]
 
-        prev_state = state_path[0]
-
         for i in range(len(genome)):
             # count number of emissions and transitions
             curr_state = state_path[i]
@@ -125,10 +123,12 @@ def count_observations(paired_lines, num_states):
                 emission_table[int(curr_state)][genome[i]] = 1
 
 
+        prev_state = state_path[0]
+
+        for i in range(1, len(state_path)):
             # check for transition from state to state
-            if prev_state != curr_state:
-                #print('\ttransition from', prev_state, 'to', curr_state)
-                transition_matrix[int(prev_state)][int(curr_state)] += 1
+            curr_state = state_path[i]
+            transition_matrix[int(prev_state)][int(curr_state)] += 1
 
             prev_state = curr_state
 
@@ -164,16 +164,18 @@ def calculate_transition_probabilities(transitions):
     #   sum all observations for each state
     #   then divide every observation by total observations
     num_states = len(transitions)
-    total_observations = 0
+    total_observations = [0 for i in range(len(transitions))]
 
     for i in range(num_states):
         for k in range(num_states):
-            total_observations += transitions[i][k]
+            total_observations[i] += transitions[i][k]
 
     # calculate probability
     for i in range(num_states):
         for k in range(num_states):
-            transitions[i][k] = (transitions[i][k])/total_observations
+            #print(transitions[i][k], '/', total_observations[i], '=', end='', sep='')
+            transitions[i][k] = (transitions[i][k])/total_observations[i]
+            #print(transitions[i][k])
         
     return transitions
 
