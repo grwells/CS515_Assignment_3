@@ -26,8 +26,11 @@ Garrett Wells \\
 
 \subsection{Emission Table}
 
-\begin{tabular}{c  c  c  c}
-    Amino Acid & State 0 & State 1 & State 2 \\
+\begin{tabular}{|c|c  c  c|}
+    \hline
+    \textbf{Amino Acid} & \multicolumn{3}{|c|}{\textbf{State}} \\
+    \hline
+    -  &  0 & 1 & 2 \\
     \hline
     a & 3.91 & 7.94 & 1.59 \\
     \hline
@@ -72,14 +75,17 @@ Garrett Wells \\
 \end{tabular}
 
 
-\begin{tabular}{c c c c}
-    From State & \multicolumn{3}{c}{To State} \\
+\subsection{Transition Table}
+\begin{tabular}{|c|c c c|}
     \hline
-     & State 0 & State 1 & State 2 \\
+    \textbf{From State} & \multicolumn{3}{c|}{\textbf{To State}} \\
+    \hline
+    - & 0 & 1 & 2 \\
     \hline
     0 & 96.1 & 3.89 & 0.00 \\
     1 & 0.00 & 92.01 & 7.99 \\
     2 & 1.54 & 0.00 & 98.5 \\
+    \hline
 \end{tabular}
 
 \end{document}
