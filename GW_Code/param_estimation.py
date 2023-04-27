@@ -147,13 +147,19 @@ def calculate_emission_probabilities(emissions):
 
     for i in range(num_states):
         keys = emissions[i].keys()
+        emissions[i]['sum'] = 0
 
         for symbol in keys:
             total_observations[i] += emissions[i][symbol]
 
         # calculate probability
         for symbol in keys:
+            if symbol is 'sum':
+               continue 
+
             emissions[i][symbol] = (emissions[i][symbol])/total_observations[i]
+            emissions[i]['sum'] += emissions[i][symbol]
+            print(f'sum[{i}] +=', emissions[i][symbol], f'{symbol}=', emissions[i]['sum'])
         
 
     return emissions
