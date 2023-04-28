@@ -7,6 +7,7 @@ import pandas as pd
 aminoDictionary = {'a': 0, 'r': 1, 'n': 2, 'd': 3, 'c': 4, 'q': 5, 'e': 6, 'g': 7, 'h': 8, 'i': 9,
                        'l': 10, 'k': 11, 'm': 12, 'f': 13, 'p': 14, 's': 15, 't': 16, 'w': 17, 'y': 18, 'v': 19}
 
+#returns the number of pairs over a list of sequences as defined as P_ab and P_ba
 def number_of_character_pairs_in_sequences(letterA: str, letterB: str, sequenceList: list) -> int:
     
     pairs = 0
@@ -21,6 +22,7 @@ def number_of_character_pairs_in_sequences(letterA: str, letterB: str, sequenceL
         else:
             # if(col.count(letterA) * col.count(letterB) > 0):
             #     print("found pair in col:",i) 
+
             pairs += col.count(letterA) * col.count(letterB)
     
     return pairs
@@ -47,7 +49,8 @@ def generate_scoring_matrix(filename: str) -> list:
 
     #pairs are characterized by the Σ(n) from 1 to the len(col) - 1 which is characterized by (n^2 + n) / 2) 
     possible_pairs = calculate_pairs(number_of_sequences)
-    total_possible_pairs = possible_pairs *(sequence_length)
+    #possible pairs for a column multiplied by the number of columns which is the length of the sequence.
+    total_possible_pairs = possible_pairs * (sequence_length)
     
     #fill the scoring matrix
     for rowKey, rowValue in aminoDictionary.items():
@@ -84,7 +87,8 @@ def main():
     score_matrix = generate_scoring_matrix("DataFile1-1.txt")
     
     #print(score_matrix)
-
+    
+    #pretty print
     df = pd.DataFrame(score_matrix,columns=list(aminoDictionary.keys()),index=list(aminoDictionary.keys()))
 
     print(df)
