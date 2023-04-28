@@ -1,6 +1,5 @@
-from collections import Counter
 from itertools import chain
-from math import log10
+from math import log10, copysign
 import pandas as pd
 
 
@@ -30,6 +29,9 @@ def number_of_character_pairs_in_sequences(letterA: str, letterB: str, sequenceL
 #pairs are characterized by the Σ(k) from 1 to n - 1 which is characterized by (n-1^2 + n-1) / 2) 
 def calculate_pairs(n : int) -> int:
     return (pow(n-1,2) + n-1 ) // 2
+
+def round_up(x):
+    return int(x + copysign(0.5, x))
 
 def generate_scoring_matrix(filename: str) -> list:
     sequence_list = []
@@ -75,7 +77,12 @@ def generate_scoring_matrix(filename: str) -> list:
             if(probability_of_pair == 0 or background_freq_a == 0 or background_freq_b == 0):
                 score_matrix[rowValue][colValue] = 0
             else:
-                score_matrix[rowValue][colValue] = log10(probability_of_pair/(background_freq_a * background_freq_b))
+                #6.25 scaling
+                result = 1/0.16 * log10(probability_of_pair/(background_freq_a * background_freq_b))
+
+                rounded = round_up(result)
+
+                score_matrix[rowValue][colValue] = rounded 
 
     return score_matrix    
 
