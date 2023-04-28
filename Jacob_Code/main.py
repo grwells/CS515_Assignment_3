@@ -40,8 +40,9 @@ def generate_scoring_matrix(filename: str) -> list:
         for line in file:
             line = line.strip()
             sequence_list.append(list(line))
-        
+    #rows
     number_of_sequences = len(sequence_list)
+    #Columns
     sequence_length = len(sequence_list[0])
 
     #pairs are characterized by the Σ(n) from 1 to the len(col) - 1 which is characterized by (n^2 + n) / 2) 
