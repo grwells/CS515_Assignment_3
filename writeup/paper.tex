@@ -20,72 +20,104 @@ Garrett Wells \\
 
 \section{Algorithm Descriptions}
 
+\subsection{Substitution Matrix}
+
+\subsection{Emission and Transition Probabilities}
+Emission and transition probabilities may be described as the following:
+
+\begin{description}
+    \item[Emission] a symbol occur(emitted) in a genome while in a specific state.
+    \item[Transition] a change from one state to another, representing a change in the purpose or type of the sequence.
+\end{description}
+
+In this case, a symbol refers to one of the 20 amino acids, represented by its single letter substitute. Examples can be seen in emission table \ref{emissions}. In the emission parameters are calculated individually for each symbol based on state. The equation used for these calculations is listed below. The term, $e_{s_{x}symbol_y}$, represents the number of occurrences of $symbol_y$ in state $s_x$. This term is divided by all occurrences of any symbol in state $s_x$ to produce a probability of seeing $symbol_y$ in $s_x$.
+
+\begin{equation}
+    \frac{e_{s_{x}symbol_y}}{\sum_{k=1}^n e_{s_xsymbol_k}}
+\end{equation}
+
+
+Transition parameters are described as the probability of ``transitioning from state \verb+X+ to state \verb+Y+''(see table \ref{transitions}). They are calculated as the number of observed transitions between two states, $s_x$ and $s_y$, divided by all observed transitions out of state $s_x$. Transitions between the symbols in the same state are counted to estimate the probability of remaining in the current state. The equation for this calculation is more formally stated below with $t$ representing observed transitions between two states.
+
+\begin{equation}
+    \frac{t_{s_{x}s_{y}}}{\sum_{k = 0}^{n} t_{s_{x}s_{k}}}
+\end{equation}
+
+As may be expected, all probabilities sum to 1, though in slightly different ways for each table. For the emission table, all probabilities for symbols seen in state \verb+0+(seen as one column of the table), for example will sum to 1. For the transition table, however, one horizontal row should be expected to sum to 1.
 
 \section{Results}
 
+\begin{table}[!hbp]
+    \centering
+    \caption{Emission By State}
+    \vspace{0.5cm}
+    \begin{tabular}{|c|c  c  c|}
+        \hline
+        \textbf{Amino Acid} & \multicolumn{3}{|c|}{\textbf{State}} \\
+        \hline
+        -  &  0 & 1 & 2 \\
+        \hline
+        a & 3.91 & 7.94 & 1.59 \\
+        \hline
+        c & 3.84 & 2.75 & 6.86 \\
+        \hline
+        d & 1.87 & 1.72 & 4.18 \\
+        \hline
+        e & 3.91 & 2.62 & 5.62 \\
+        \hline
+        f & 6.60 & 4.96 & 5.55 \\
+        \hline
+        g & 3.73 & 1.85 & 4.86 \\
+        \hline
+        h & 3.65 & 1.77 & 3.63 \\
+        \hline
+        i & 2.91 & 2.13 & 5.01 \\
+        \hline
+        k & 3.29 & 2.40 & 4.96 \\
+        \hline
+        l & 3.48 & 5.26 & 4.22 \\
+        \hline
+        m & 4.67 & 4.28 & 4.79 \\
+        \hline
+        n & 5.58 & 2.35 & 5.41 \\
+        \hline
+        p & 5.84 & 3.71 & 5.75 \\
+        \hline
+        q & 5.44 & 2.18 & 5.38 \\
+        \hline
+        r & 2.82 & 1.75 & 5.18 \\
+        \hline
+        s & 5.77 & 4.17 & 4.90 \\
+        \hline
+        t & 5.96 & 11.10 & 5.75 \\
+        \hline
+        v & 11.35 & 14.54 & 5.38 \\
+        \hline
+        w & 7.43 & 11.86 & 6.43 \\
+        \hline
+        y & 7.97 & 10.66 & 4.56 \\
+        \hline
+    \end{tabular}
+    \label{emissions}
+\end{table}
 
-\subsection{Emission Table}
 
-\begin{tabular}{|c|c  c  c|}
-    \hline
-    \textbf{Amino Acid} & \multicolumn{3}{|c|}{\textbf{State}} \\
-    \hline
-    -  &  0 & 1 & 2 \\
-    \hline
-    a & 3.91 & 7.94 & 1.59 \\
-    \hline
-    c & 3.84 & 2.75 & 6.86 \\
-    \hline
-    d & 1.87 & 1.72 & 4.18 \\
-    \hline
-    e & 3.91 & 2.62 & 5.62 \\
-    \hline
-    f & 6.60 & 4.96 & 5.55 \\
-    \hline
-    g & 3.73 & 1.85 & 4.86 \\
-    \hline
-    h & 3.65 & 1.77 & 3.63 \\
-    \hline
-    i & 2.91 & 2.13 & 5.01 \\
-    \hline
-    k & 3.29 & 2.40 & 4.96 \\
-    \hline
-    l & 3.48 & 5.26 & 4.22 \\
-    \hline
-    m & 4.67 & 4.28 & 4.79 \\
-    \hline
-    n & 5.58 & 2.35 & 5.41 \\
-    \hline
-    p & 5.84 & 3.71 & 5.75 \\
-    \hline
-    q & 5.44 & 2.18 & 5.38 \\
-    \hline
-    r & 2.82 & 1.75 & 5.18 \\
-    \hline
-    s & 5.77 & 4.17 & 4.90 \\
-    \hline
-    t & 5.96 & 11.10 & 5.75 \\
-    \hline
-    v & 11.35 & 14.54 & 5.38 \\
-    \hline
-    w & 7.43 & 11.86 & 6.43 \\
-    \hline
-    y & 7.97 & 10.66 & 4.56 \\
-    \hline
-\end{tabular}
-
-
-\subsection{Transition Table}
-\begin{tabular}{|c|c c c|}
-    \hline
-    \textbf{From State} & \multicolumn{3}{c|}{\textbf{To State}} \\
-    \hline
-    - & 0 & 1 & 2 \\
-    \hline
-    0 & 96.1 & 3.89 & 0.00 \\
-    1 & 0.00 & 92.01 & 7.99 \\
-    2 & 1.54 & 0.00 & 98.5 \\
-    \hline
-\end{tabular}
+\begin{table}[!hbp]
+    \centering
+    \caption{Transitions Between States }
+    \vspace{0.5cm}
+    \begin{tabular}{|c|c c c|}
+        \hline
+        \textbf{From State} & \multicolumn{3}{c|}{\textbf{To State}} \\
+        \hline
+        - & 0 & 1 & 2 \\
+        \hline
+        0 & 96.1 & 3.89 & 0.00 \\
+        1 & 0.00 & 92.01 & 7.99 \\
+        2 & 1.54 & 0.00 & 98.5 \\
+        \hline
+    \end{tabular}
+    \label{transitions}
+\end{table}
 
 \end{document}
