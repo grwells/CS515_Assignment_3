@@ -26,8 +26,8 @@ Garrett Wells \\
 Emission and transition probabilities may be described as the following:
 
 \begin{description}
-    \item[Emission] a symbol occur(emitted) in a genome while in a specific state.
-    \item[Transition] a change from one state to another, representing a change in the purpose or type of the sequence.
+    \item[Emission] a symbol occurring(emitted) in a genome while in a specific state.
+    \item[Transition] a change from one state to another, representing a change in the function or type of the sequence.
 \end{description}
 
 In this case, a symbol refers to one of the 20 amino acids, represented by its single letter substitute. Examples can be seen in emission table \ref{emissions}. In the emission parameters are calculated individually for each symbol based on state. The equation used for these calculations is listed below. The term, $e_{s_{x}symbol_y}$, represents the number of occurrences of $symbol_y$ in state $s_x$. This term is divided by all occurrences of any symbol in state $s_x$ to produce a probability of seeing $symbol_y$ in $s_x$.
@@ -43,13 +43,13 @@ Transition parameters are described as the probability of ``transitioning from s
     \frac{t_{s_{x}s_{y}}}{\sum_{k = 0}^{n} t_{s_{x}s_{k}}}
 \end{equation}
 
-As may be expected, all probabilities sum to 1, though in slightly different ways for each table. For the emission table, all probabilities for symbols seen in state \verb+0+(seen as one column of the table), for example will sum to 1. For the transition table, however, one horizontal row should be expected to sum to 1.
+As may be expected, all probabilities sum to 1, though in slightly different ways for each table. For the emission table, all probabilities for symbols seen in state \verb+0+(seen as one column of the table), for example will sum to 1. For the transition table, however, one horizontal row should be expected to sum to 1. Also note that though some transition probabilities are 0, this is considered acceptable since it is this represents that some segments of genome do not occur following others.
 
 \section{Results}
 
 \begin{table}[!hbp]
     \centering
-    \caption{Emission By State}
+    \caption{Emission Percentage By State}
     \vspace{0.5cm}
     \begin{tabular}{|c|c  c  c|}
         \hline
@@ -104,7 +104,7 @@ As may be expected, all probabilities sum to 1, though in slightly different way
 
 \begin{table}[!hbp]
     \centering
-    \caption{Transitions Between States }
+    \caption{Transitions Percentage Between States }
     \vspace{0.5cm}
     \begin{tabular}{|c|c c c|}
         \hline
