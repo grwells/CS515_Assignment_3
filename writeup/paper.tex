@@ -83,13 +83,24 @@ While devising the algorithm for implementing a log-odds score two key mathemati
 	\label{fig:screenshot001}
 \end{figure}
 
-The number of total possible pairs is characterized by summation $\sum_{k=1}^{n-1} a_k$ where n is the number of sequences in the column. The closed form of this summation is 
+The number of total possible pairs in a given column is characterized by summation $\sum_{k=1}^{n-1} a_k$ where n is the number of sequences in the column. The closed form of this summation is:
 
 \begin{equation}
 	\label{eq:closed form}
-	{F_{j}} = \frac{\text{Occurrence of character j in all sequences}} {\text{Total number of characters in all sequences}}
+	{\text{Total number of pairs in a column} = \sum_{k=1}^{n-1} a_k} =\frac{n^{2} + n}{2}
 \end{equation}
 
+The second shortcut was recognizing that since we are finding both i,j and j,i pairs, we can calculate the number of these pairs based purely on how many i and j characters are in a given column. 
+
+
+\begin{equation}
+	\label{eq:ij pairs}
+	{\text{i,j and j,i pairs in column}} = \text{count of j in col} * \text{count of i in col}
+\end{equation}
+
+However, there is a limitation in the use of equation \ref{eq:ij pairs} as it can only be used for i,j pairs that are not the same character which would occur along the diagonal of our substitution matrix. Instead, equation \ref{eq:closed form} can be used where n is the number of a's in a column for an ${P_{aa}}$ calculation.
+
+Using these two equations we can reduce the time complexity of our program immensely instead of having to go through all possible pairs of a column for the entire length of all the sequences which would incur a $K * \frac{n^{2} + n}{2}$ complexity where $K$ is the length of our sequences and $n$ is the number of sequences we have. We can reduce that down to just  $K * n$ by only having to count the character frequency amongst the column of sequences for the length of the sequences by using equations \ref{eq:closed form} and \ref{eq:ij pairs} to determine how many pairs should exist rather than manually indexing all sequences in a column and finding the pairs manually through comparison.
 
 
 
