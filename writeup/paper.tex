@@ -4,6 +4,8 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{parskip}
+\usepackage{amsmath}
+
 
 \title{3: Project Write-up}
 \author{
@@ -42,8 +44,29 @@ In this paper we implement two algorithms: Generating a BLOSUM-like substitution
 
 \subsection{Substitution Matrix}
 
+To generate a BLOSUM-like substitution matrix a log-odds score is used which is defined equation \ref{eq:log-odds}.
 
+\begin{equation}
+	\label{eq:log-odds}
+	{S_{(i,j)}} = {\frac{1}{\lambda}} \log \frac{P_{ij}}{F_i F_j}
+\end{equation}
 
+\begin{equation}
+	\label{eq:scaling factor}
+	{\frac{1}{\lambda}} = \text{Scaling factor}
+\end{equation}
+
+\begin{equation}
+	\label{eq:prob-pairs}
+	{P_{ij}} = \frac{\text{Number of i,j and j,i character pairs}}{\text{Total pairs possible}}
+\end{equation}
+
+\begin{equation}
+	\label{eq:prob-frequency}
+	{F_{i}} = \frac{\text{Number of i characters in all sequences}} {\text{Total number of characters in all sequences}}
+\end{equation}
+
+A score for a pair of amino acid characters i and j is defined as the a scaling factor $\frac{1}{\lambda}$ multiplied by the log of the probability of an i,j character pair over the background frequency of i and j. To calculate the probability of an i,j pair, all sequences are aligned with each other and a column by column analysis takes place. for each column every element is 
 
 
 \subsection{Emission and Transition Probabilities}
