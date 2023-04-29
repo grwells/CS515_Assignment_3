@@ -1,3 +1,5 @@
+#Part 1 Substitution matrix generation
+
 from itertools import chain
 from math import log10, copysign
 import pandas as pd
@@ -75,7 +77,7 @@ def generate_scoring_matrix(filename: str) -> list:
 def main():
 
     score_matrix = generate_scoring_matrix("DataFile1-1.txt")
-    
+
     #pretty print
     df = pd.DataFrame(score_matrix,columns=list(aminoDictionary.keys()),index=list(aminoDictionary.keys()))
 
