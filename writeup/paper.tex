@@ -4,6 +4,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
+\usepackage{siunitx}
 \title{3: Project Write-up}
 \author{
 Jacob Friedberg \\
@@ -17,7 +18,7 @@ Garrett Wells \\
 \begin{document}
 \maketitle
 \begin{abstract}
-    This project used techniques presented in the course to estimate parameters for a Hidden Markov Model of the provided data set. We prepared a substitution matrix, emission probability table, and state transition table from the data. The methods employed here produced good results which we are moderately confident in.
+    \noindent This project used techniques presented in the course to estimate parameters for a Hidden Markov Model of the provided data set. We prepared a substitution matrix, emission probability table, and state transition table from the data. The methods employed here produced good results which we are moderately confident in.
 \end{abstract}
 
 \section{Introduction ADD SOME STUFF HERE GARRETT}
@@ -26,6 +27,76 @@ Something about substitution matrices and what they are used for. HMM and the de
 \section{Algorithm Descriptions}
 
 \subsection{Substitution Matrix}
+
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{l|l*{19}{l} }
+		& a  & r  & n & d & c & q  & e  & g  & h & i  & l  & k  & m  & f  & p  & s  & t & w & y  & v \\ \hline
+		a & 7  & -1 & 1 & 3 & 2 & -1 & -1 & -2 & 1 & -2 & -2 & -1 & -1 & -2 & -1 & -2 & 3 & 1 & -1 & 1 \\
+		r & -1 & 4  & 2 & 1 & 1 & 1  & 2  & 1  & 2 & 1  & 1  & 2  & 3  & 2  & 2  & 2  & 1 & 1 & 1  & 1 \\
+		n & 1  & 2  & 4 & 1 & 1 & 2  & 2  & 1  & 2 & 2  & 1  & 1  & 2  & 1  & 3  & 1  & 2 & 1 & 1  & 2 \\
+		d & 3  & 1  & 1 & 3 & 2 & 1  & 2  & 2  & 2 & 2  & 1  & 2  & 1  & 2  & 1  & 2  & 2 & 1 & 1  & 2 \\
+		c & 2  & 1  & 1 & 2 & 4 & 0  & 0  & 2  & 1 & 1  & 2  & 2  & 2  & 1  & 2  & 2  & 0 & 0 & 3  & 1 \\
+		q & -1 & 1  & 2 & 1 & 0 & 4  & 1  & 0  & 2 & 2  & 3  & 1  & 2  & 2  & 1  & 1  & 2 & 1 & 1  & 0 \\
+		e & -1 & 2  & 2 & 2 & 0 & 1  & 4  & 2  & 3 & 3  & 0  & 1  & 2  & 1  & 0  & 2  & 1 & 2 & 1  & 0 \\
+		g & -2 & 1  & 1 & 2 & 2 & 0  & 2  & 4  & 1 & 2  & 2  & 1  & 1  & 2  & 2  & 3  & 1 & 2 & 0  & 1 \\
+		h & 1  & 2  & 2 & 2 & 1 & 2  & 3  & 1  & 4 & 2  & 1  & 2  & 1  & 1  & 0  & 2  & 3 & 1 & 2  & 0 \\
+		i & -2 & 1  & 2 & 2 & 1 & 2  & 3  & 2  & 2 & 3  & 1  & 2  & 3  & 3  & 2  & 2  & 1 & 1 & 1  & 0 \\
+		l & -2 & 1  & 1 & 1 & 2 & 3  & 0  & 2  & 1 & 1  & 5  & 1  & 1  & 1  & 2  & 2  & 1 & 1 & 2  & 1 \\
+		k & -1 & 2  & 1 & 2 & 2 & 1  & 1  & 1  & 2 & 2  & 1  & 3  & 1  & 0  & 2  & 1  & 3 & 2 & 2  & 1 \\
+		m & -1 & 3  & 2 & 1 & 2 & 2  & 2  & 1  & 1 & 3  & 1  & 1  & 3  & 2  & 1  & 1  & 1 & 2 & 2  & 1 \\
+		f & -2 & 2  & 1 & 2 & 1 & 2  & 1  & 2  & 1 & 3  & 1  & 0  & 2  & 3  & 2  & 1  & 1 & 1 & 1  & 1 \\
+		p & -1 & 2  & 3 & 1 & 2 & 1  & 0  & 2  & 0 & 2  & 2  & 2  & 1  & 2  & 4  & 2  & 0 & 1 & 1  & 1 \\
+		s & -2 & 2  & 1 & 2 & 2 & 1  & 2  & 3  & 2 & 2  & 2  & 1  & 1  & 1  & 2  & 3  & 2 & 1 & 1  & 2 \\
+		t & 3  & 1  & 2 & 2 & 0 & 2  & 1  & 1  & 3 & 1  & 1  & 3  & 1  & 1  & 0  & 2  & 3 & 1 & 2  & 1 \\
+		w & 1  & 1  & 1 & 1 & 0 & 1  & 2  & 2  & 1 & 1  & 1  & 2  & 2  & 1  & 1  & 1  & 1 & 3 & 0  & 2 \\
+		y & -1 & 1  & 1 & 1 & 3 & 1  & 1  & 0  & 2 & 1  & 2  & 2  & 2  & 1  & 1  & 1  & 2 & 0 & 4  & 1 \\
+		v & 1  & 1  & 2 & 2 & 1 & 0  & 0  & 1  & 0 & 0  & 1  & 1  & 1  & 1  & 1  & 2  & 1 & 2 & 1  & 4\\
+		\hline
+	\end{tabular}
+	\caption{Generated BLOSUM-like scoring matrix}
+\end{table}
+
+
+
+
+\begin{table}[]
+	\centering
+	\
+	\begin{tabular}{l|cccccccccccccccccccc|}
+		& a  & r  & n & d & c & q  & e  & g  & h & i  & l  & k  & m  & f  & p  & s  & t & w & y  & v \\ \hline
+		a & 7  & -1 & 1 & 3 & 2 & -1 & -1 & -2 & 1 & -2 & -2 & -1 & -1 & -2 & -1 & -2 & 3 & 1 & -1 & 1 \\
+		r & -1 & 4  & 2 & 1 & 1 & 1  & 2  & 1  & 2 & 1  & 1  & 2  & 3  & 2  & 2  & 2  & 1 & 1 & 1  & 1 \\
+		n & 1  & 2  & 4 & 1 & 1 & 2  & 2  & 1  & 2 & 2  & 1  & 1  & 2  & 1  & 3  & 1  & 2 & 1 & 1  & 2 \\
+		d & 3  & 1  & 1 & 3 & 2 & 1  & 2  & 2  & 2 & 2  & 1  & 2  & 1  & 2  & 1  & 2  & 2 & 1 & 1  & 2 \\
+		c & 2  & 1  & 1 & 2 & 4 & 0  & 0  & 2  & 1 & 1  & 2  & 2  & 2  & 1  & 2  & 2  & 0 & 0 & 3  & 1 \\
+		q & -1 & 1  & 2 & 1 & 0 & 4  & 1  & 0  & 2 & 2  & 3  & 1  & 2  & 2  & 1  & 1  & 2 & 1 & 1  & 0 \\
+		e & -1 & 2  & 2 & 2 & 0 & 1  & 4  & 2  & 3 & 3  & 0  & 1  & 2  & 1  & 0  & 2  & 1 & 2 & 1  & 0 \\
+		g & -2 & 1  & 1 & 2 & 2 & 0  & 2  & 4  & 1 & 2  & 2  & 1  & 1  & 2  & 2  & 3  & 1 & 2 & 0  & 1 \\
+		h & 1  & 2  & 2 & 2 & 1 & 2  & 3  & 1  & 4 & 2  & 1  & 2  & 1  & 1  & 0  & 2  & 3 & 1 & 2  & 0 \\
+		i & -2 & 1  & 2 & 2 & 1 & 2  & 3  & 2  & 2 & 3  & 1  & 2  & 3  & 3  & 2  & 2  & 1 & 1 & 1  & 0 \\
+		l & -2 & 1  & 1 & 1 & 2 & 3  & 0  & 2  & 1 & 1  & 5  & 1  & 1  & 1  & 2  & 2  & 1 & 1 & 2  & 1 \\
+		k & -1 & 2  & 1 & 2 & 2 & 1  & 1  & 1  & 2 & 2  & 1  & 3  & 1  & 0  & 2  & 1  & 3 & 2 & 2  & 1 \\
+		m & -1 & 3  & 2 & 1 & 2 & 2  & 2  & 1  & 1 & 3  & 1  & 1  & 3  & 2  & 1  & 1  & 1 & 2 & 2  & 1 \\
+		f & -2 & 2  & 1 & 2 & 1 & 2  & 1  & 2  & 1 & 3  & 1  & 0  & 2  & 3  & 2  & 1  & 1 & 1 & 1  & 1 \\
+		p & -1 & 2  & 3 & 1 & 2 & 1  & 0  & 2  & 0 & 2  & 2  & 2  & 1  & 2  & 4  & 2  & 0 & 1 & 1  & 1 \\
+		s & -2 & 2  & 1 & 2 & 2 & 1  & 2  & 3  & 2 & 2  & 2  & 1  & 1  & 1  & 2  & 3  & 2 & 1 & 1  & 2 \\
+		t & 3  & 1  & 2 & 2 & 0 & 2  & 1  & 1  & 3 & 1  & 1  & 3  & 1  & 1  & 0  & 2  & 3 & 1 & 2  & 1 \\
+		w & 1  & 1  & 1 & 1 & 0 & 1  & 2  & 2  & 1 & 1  & 1  & 2  & 2  & 1  & 1  & 1  & 1 & 3 & 0  & 2 \\
+		y & -1 & 1  & 1 & 1 & 3 & 1  & 1  & 0  & 2 & 1  & 2  & 2  & 2  & 1  & 1  & 1  & 2 & 0 & 4  & 1 \\
+		v & 1  & 1  & 2 & 2 & 1 & 0  & 0  & 1  & 0 & 0  & 1  & 1  & 1  & 1  & 1  & 2  & 1 & 2 & 1  & 4\\
+		\hline
+	\end{tabular}
+	\caption{Generated BLOSUM-like scoring matrix}
+\end{table}
+
+
+\begin{tabular}{c|cccccccccccccccccccc}
+
+	
+\end{tabular}
+
 
 \subsection{Emission and Transition Probabilities}
 Emission and transition probabilities may be described as the following:

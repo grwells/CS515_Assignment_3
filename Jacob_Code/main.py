@@ -66,7 +66,7 @@ def generate_scoring_matrix(filename: str) -> list:
                 score_matrix[rowValue][colValue] = 0
             else:
                 #6.25 scaling
-                result = 1/0.05 * log10(probability_of_pair/(background_freq_a * background_freq_b))
+                result = 1/0.16 * log10(probability_of_pair/(background_freq_a * background_freq_b))
                 #Round the result.
                 score_matrix[rowValue][colValue] = round_up(result)
 
@@ -75,7 +75,7 @@ def generate_scoring_matrix(filename: str) -> list:
 def main():
 
     score_matrix = generate_scoring_matrix("DataFile1-1.txt")
-  
+    
     #pretty print
     df = pd.DataFrame(score_matrix,columns=list(aminoDictionary.keys()),index=list(aminoDictionary.keys()))
 
