@@ -10,7 +10,7 @@
 \setlength{\@fptop}{5pt}
 \makeatother
 
-\title{3: Project Write-up}
+\title{Substitution Matrix Generation and Hidden Markov Model Statistical Parameter Estimation.}
 \author{
 Jacob Friedberg \\
 \texttt{frie2142@vandals.uidaho.edu}
@@ -23,7 +23,7 @@ Garrett Wells \\
 \begin{document}
 \maketitle
 \begin{abstract}
-    \noindent This project used techniques presented in the course to estimate parameters for a Hidden Markov Model of the provided data set. We prepared a substitution matrix, emission probability table, and state transition table from the data. The methods employed here produced good results which we are moderately confident in.
+    \noindent Substitution matrices are important tools in the bio-informatics toolkit. They allow researchers to determine how similar two sequences are to one another. Hidden Markov models also provide a similar usefulness by allowing researchers to determine how much parts of sequences contribute to characteristics of a gene. Using a list of 200 sequences we generate a substitution matrix using log-odds and estimate parameters for a Hidden Markov Model. We provide a substitution matrix, emission probability table, and state transition table from the data. The methods employed here produced good results which we are moderately confident in their accuracy. However, due to the small dateset size we are not confident that the substitution matrix or HMM parameters can be used generally on all types of sequences.
 \end{abstract}
 
 \section{Introduction}
@@ -103,7 +103,8 @@ The second shortcut was recognizing that since we are finding both i,j and j,i p
 
 However, there is a limitation in the use of equation \ref{eq:ij pairs} as it can only be used for i,j pairs that are not the same character which would occur along the diagonal of our substitution matrix. Instead, equation \ref{eq:closed form} can be used where n is the number of a's in a column for an ${P_{aa}}$ calculation.
 
-Using these two equations we can reduce the time complexity of our program immensely instead of having to go through all possible pairs of a column for the entire length of all the sequences which would incur a $K * \frac{n^{2} + n}{2}$ complexity where $K$ is the length of our sequences and $n$ is the number of sequences we have. We can reduce that down to just  $K * n$ by only having to count the character frequency amongst the column of sequences for the length of the sequences by using equations \ref{eq:closed form} and \ref{eq:ij pairs} to determine how many pairs should exist rather than manually indexing all sequences in a column and finding the pairs manually through comparison.
+Using these two equations we can reduce the time complexity of our program immensely instead of having to go through all possible pairs of a column for the entire length of all the sequences which would incur a $K * \frac{n^{2} + n}{2}$ complexity where $K$ is the length of our sequences and $n$ is the number of sequences we have. We can reduce that down to just  $K * n$ by using equations \ref{eq:closed form} and \ref{eq:ij pairs} to determine how many pairs should exist based on the counts of characters we are interested in rather than manually indexing all sequences in a column and finding the pairs manually through comparison.
+
 
 
 
