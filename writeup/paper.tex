@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{parskip}
 
 \title{3: Project Write-up}
 \author{
@@ -21,10 +22,11 @@ Garrett Wells \\
 \end{abstract}
 
 \section{Introduction}
-In this paper we implement two algorithms: Generating a BLOSUM-like substitution matrix using a provided set of 200 sequences and calculating the emission and transition probabilities given a set of sequences that are annotated to indicate the locations where specific amino acids within the gene contribute to different characteristics of the \textit{Silacus Soulas} insect.
+
+In bio-informatics one of the crucial tools used to determine how similar two sequences are is a substitution or scoring matrix. These matrices give us a score when aligning sequences that can give us an idea of how related one sequence is to another. Two sequences are aligned with each other and character by character a score is accumulated across the sequence. There are several commonly used substitution matrices including BLOSUM-50, BLOSUM-62, and PAM. To generate these matrices, it is typical calculate the log-odds score for each cell of the matrix. This score is creaded by analyzing  the frequency of at which a pair of characters appears in a large data set of sequences compared to the background frequency of each character and taking the $\log$ of that value. A scaling factor is used to scale the values to the range of $[-10,10]$. 
+
 
 The purpose behind collecting this information is to model the probability of observing gene sequences which contribute to characteristics of interest. Such a model may then be used to analyze new gene samples to predict which characteristics they correspond to without employing the skills of a highly trained biologist. The model generated with this data is called a Hidden Markov Model(HMM) and uses the sequence of amino acids to predict the most probable state(genomic characteristic) that the sequence encodes for. The statistical information HMMs rely on is defined below:
-
 
 \begin{description}
     \item[Emission] a symbol occurring(emitted) in a genome while in a specific state.
@@ -32,6 +34,8 @@ The purpose behind collecting this information is to model the probability of ob
 \end{description}
 
 This information is then used to produce a state machine which relies on emissions and transitions to guide the model's state prediction. The algorithms used to calculate these key pieces of data and tables are described below.
+
+In this paper we implement two algorithms: Generating a BLOSUM-like substitution matrix using a provided set of 200 sequences and calculating the emission and transition probabilities given a set of sequences that are annotated to indicate the locations where specific amino acids within the gene contribute to different characteristics of the \textit{Silacus Soulas} insect.
 
 
 \section{Algorithm Descriptions}
