@@ -39,7 +39,29 @@ This information is then used to produce a state machine which relies on emissio
 \subsection{Substitution Matrix}
 
 
-\begin{table}[]
+
+
+
+\subsection{Emission and Transition Probabilities}
+
+As introduced in the definition for emission, a symbol refers to one of the 20 amino acids, represented by its single letter substitute. Examples can be seen in emission table \ref{emissions}. In the emission parameters are calculated individually for each symbol based on state. The equation used for these calculations is listed below. The term, $e_{s_{x}symbol_y}$, represents the number of occurrences of $symbol_y$ in state $s_x$. This term is divided by all occurrences of any symbol in state $s_x$ to produce a probability of seeing $symbol_y$ in $s_x$.
+
+\begin{equation}
+    \frac{e_{s_{x}symbol_y}}{\sum_{k=1}^n e_{s_xsymbol_k}}
+\end{equation}
+
+
+Transition parameters are described as the probability of ``transitioning from state \verb+X+ to state \verb+Y+''(see table \ref{transitions}). They are calculated as the number of observed transitions between two states, $s_x$ and $s_y$, divided by all observed transitions out of state $s_x$. Transitions between the symbols in the same state are counted to estimate the probability of remaining in the current state. The equation for this calculation is more formally stated below with $t$ representing observed transitions between two states.
+
+\begin{equation}
+    \frac{t_{s_{x}s_{y}}}{\sum_{k = 0}^{n} t_{s_{x}s_{k}}}
+\end{equation}
+
+As may be expected, all probabilities sum to 1, though in slightly different ways for each table. For the emission table, all probabilities for symbols seen in state \verb+0+(seen as one column of the table), for example will sum to 1. For the transition table, however, one horizontal row should be expected to sum to 1. Also note that though some transition probabilities are 0, this is considered acceptable since it is this represents that some segments of genome do not occur following others.
+
+\section{Results}
+
+\begin{table}[!hbp]
 	\centering
 	\begin{tabular}{l|*{20}{r} }
 		& a  & r  & n & d & c & q  & e  & g  & h & i  & l  & k  & m  & f  & p  & s  & t & w & y  & v \\ \hline
@@ -66,28 +88,8 @@ This information is then used to produce a state machine which relies on emissio
 		\hline
 	\end{tabular}
 	\caption{Generated BLOSUM-like scoring matrix}
+    \label{substitutions}
 \end{table}
-
-
-
-\subsection{Emission and Transition Probabilities}
-
-As introduced in the definition for emission, a symbol refers to one of the 20 amino acids, represented by its single letter substitute. Examples can be seen in emission table \ref{emissions}. In the emission parameters are calculated individually for each symbol based on state. The equation used for these calculations is listed below. The term, $e_{s_{x}symbol_y}$, represents the number of occurrences of $symbol_y$ in state $s_x$. This term is divided by all occurrences of any symbol in state $s_x$ to produce a probability of seeing $symbol_y$ in $s_x$.
-
-\begin{equation}
-    \frac{e_{s_{x}symbol_y}}{\sum_{k=1}^n e_{s_xsymbol_k}}
-\end{equation}
-
-
-Transition parameters are described as the probability of ``transitioning from state \verb+X+ to state \verb+Y+''(see table \ref{transitions}). They are calculated as the number of observed transitions between two states, $s_x$ and $s_y$, divided by all observed transitions out of state $s_x$. Transitions between the symbols in the same state are counted to estimate the probability of remaining in the current state. The equation for this calculation is more formally stated below with $t$ representing observed transitions between two states.
-
-\begin{equation}
-    \frac{t_{s_{x}s_{y}}}{\sum_{k = 0}^{n} t_{s_{x}s_{k}}}
-\end{equation}
-
-As may be expected, all probabilities sum to 1, though in slightly different ways for each table. For the emission table, all probabilities for symbols seen in state \verb+0+(seen as one column of the table), for example will sum to 1. For the transition table, however, one horizontal row should be expected to sum to 1. Also note that though some transition probabilities are 0, this is considered acceptable since it is this represents that some segments of genome do not occur following others.
-
-\section{Results}
 
 \begin{table}[!hbp]
     \centering
