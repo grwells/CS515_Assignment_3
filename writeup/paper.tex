@@ -58,15 +58,41 @@ To generate a BLOSUM-like substitution matrix a log-odds score is used which is 
 
 \begin{equation}
 	\label{eq:prob-pairs}
-	{P_{ij}} = \frac{\text{Number of i,j and j,i character pairs}}{\text{Total pairs possible}}
+	{P_{ij}} = \frac{\text{Number of i,j and j,i character pairs in all sequences}}{\text{Total pairs possible in all sequences}}
 \end{equation}
 
 \begin{equation}
-	\label{eq:prob-frequency}
-	{F_{i}} = \frac{\text{Number of i characters in all sequences}} {\text{Total number of characters in all sequences}}
+	\label{eq:prob-frequencyi}
+	{F_{i}} = \frac{\text{Occurrence of character i in all sequences}} {\text{Total number of characters in all sequences}}
 \end{equation}
 
-A score for a pair of amino acid characters i and j is defined as the a scaling factor $\frac{1}{\lambda}$ multiplied by the log of the probability of an i,j character pair over the background frequency of i and j. To calculate the probability of an i,j pair, all sequences are aligned with each other and a column by column analysis takes place. for each column every element is 
+\begin{equation}
+	\label{eq:prob-frequencyj}
+	{F_{j}} = \frac{\text{Occurrence of character j in all sequences}} {\text{Total number of characters in all sequences}}
+\end{equation}
+
+
+A score for a pair of amino acid characters i and j is defined as the a scaling factor $\frac{1}{\lambda}$ multiplied by the log of the probability of an i,j character pair over the background frequency of i and j. To calculate ${P_{ij}}$, all sequences are aligned with each other and a column by column analysis takes place. For each column the number of i,j and j,i pairs are accumulated and divided by the total number of pairs possible for all sequences.  ${F_{j}}$ and ${F_{i}}$ are calculated by counting the occurrences of the characters divided by the total number of characters amongst all sequences. A scaling factor of $\lambda = 0.16 \text{ or } 6.25 \text{ times was used for our algorithm.}$
+
+While devising the algorithm for implementing a log-odds score two key mathematical shortcuts were found. First, if we analyze the pattern of possible pairs created by moving down a 4 sequence list of length 1 as seen in Figure \ref{fig:screenshot001}, we can see something interesting. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.25\linewidth]{screenshot001}
+	\caption{}
+	\label{fig:screenshot001}
+\end{figure}
+
+The number of total possible pairs is characterized by summation $\sum_{k=1}^{n-1} a_k$ where n is the number of sequences in the column. The closed form of this summation is 
+
+\begin{equation}
+	\label{eq:closed form}
+	{F_{j}} = \frac{\text{Occurrence of character j in all sequences}} {\text{Total number of characters in all sequences}}
+\end{equation}
+
+
+
+
 
 
 \subsection{Emission and Transition Probabilities}
