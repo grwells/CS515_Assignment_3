@@ -4,7 +4,6 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
-\usepackage{siunitx}
 \title{3: Project Write-up}
 \author{
 Jacob Friedberg \\
@@ -21,16 +20,18 @@ Garrett Wells \\
     \noindent This project used techniques presented in the course to estimate parameters for a Hidden Markov Model of the provided data set. We prepared a substitution matrix, emission probability table, and state transition table from the data. The methods employed here produced good results which we are moderately confident in.
 \end{abstract}
 
-\section{Introduction ADD SOME STUFF HERE GARRETT}
+\section{Introduction}
+In this paper we implement two algorithms: Generating a BLOSUM-like substitution matrix using a provided set of 200 sequences and calculating the emission and transition probabilities given a set of sequences that are annotated to indicate the locations where specific amino acids within the gene contribute to different characteristics of the \textit{Silacus Soulas} insect.
 
-Something about substitution matrices and what they are used for. HMM and the definitions for emission and transition. In this paper we implement two algorithms: Generating a BLOSUM-like substitution matrix using a provided set of 200 sequences and calculating the emission and transition probabilities given a set of sequences that are annotated to indicate the locations where specific amino acids within the gene contribute to different characteristics of the \textit{Silacus Soulas} insect.
+The purpose behind collecting this information is to model the probability of observing gene sequences which contribute to characteristics of interest. Such a model may then be used to analyze new gene samples to predict which characteristics they correspond to without employing the skills of a highly trained biologist. The model generated with this data is called a Hidden Markov Model(HMM) and uses the sequence of amino acids to predict the most probable state(genomic characteristic) that the sequence encodes for. The statistical information HMMs rely on is defined below:
 
-The purpose behind collecting this information is to model the gene sequences which contribute to characteristics of interest statistically. Such a model may then be used to analyze new gene samples to predict which characteristics they correspond to without employing the skills of a highly trained biologist. The model generated with this data is called a Hidden Markov Model(HMM) which uses the sequence of amino acids to predict the most probable state or genomic characteristic that the sequence is likely to encode for. The statistical information HMMs rely on is defined below:
 
 \begin{description}
     \item[Emission] a symbol occurring(emitted) in a genome while in a specific state.
     \item[Transition] a change from one state to another, representing a change in the function or type of the sequence.
 \end{description}
+
+This information is then used to produce a state machine which relies on emissions and transitions to guide the model's state prediction. The algorithms used to calculate these key pieces of data and tables are described below.
 
 
 \section{Algorithm Descriptions}
@@ -71,7 +72,7 @@ The purpose behind collecting this information is to model the gene sequences wh
 
 \subsection{Emission and Transition Probabilities}
 
-In this case, a symbol refers to one of the 20 amino acids, represented by its single letter substitute. Examples can be seen in emission table \ref{emissions}. In the emission parameters are calculated individually for each symbol based on state. The equation used for these calculations is listed below. The term, $e_{s_{x}symbol_y}$, represents the number of occurrences of $symbol_y$ in state $s_x$. This term is divided by all occurrences of any symbol in state $s_x$ to produce a probability of seeing $symbol_y$ in $s_x$.
+As introduced in the definition for emission, a symbol refers to one of the 20 amino acids, represented by its single letter substitute. Examples can be seen in emission table \ref{emissions}. In the emission parameters are calculated individually for each symbol based on state. The equation used for these calculations is listed below. The term, $e_{s_{x}symbol_y}$, represents the number of occurrences of $symbol_y$ in state $s_x$. This term is divided by all occurrences of any symbol in state $s_x$ to produce a probability of seeing $symbol_y$ in $s_x$.
 
 \begin{equation}
     \frac{e_{s_{x}symbol_y}}{\sum_{k=1}^n e_{s_xsymbol_k}}
