@@ -11,17 +11,12 @@ def number_of_character_pairs_in_sequences(letterA: str, letterB: str, sequenceL
     
     pairs = 0
     for i in range(0,len(sequenceList[0])):
+        #Column of the sequences 
         col = [col[i] for col in sequenceList]
-        #print(col)
 
         if (letterA == letterB):
-            # if calculate_pairs(col.count(letterA)) > 0:
-            #     print("found pair in col:",i) 
             pairs += calculate_pairs(col.count(letterA))     
         else:
-            # if(col.count(letterA) * col.count(letterB) > 0):
-            #     print("found pair in col:",i) 
-
             pairs += col.count(letterA) * col.count(letterB)
     
     return pairs
@@ -30,7 +25,7 @@ def number_of_character_pairs_in_sequences(letterA: str, letterB: str, sequenceL
 def calculate_pairs(n : int) -> int:
     return (pow(n-1,2) + n-1 ) // 2
 
-def round_up(x):
+def round_up(x:float) -> int:
     return int(x + copysign(0.5, x))
 
 def generate_scoring_matrix(filename: str) -> list:
@@ -57,44 +52,30 @@ def generate_scoring_matrix(filename: str) -> list:
     #fill the scoring matrix
     for rowKey, rowValue in aminoDictionary.items():
         for colKey, colValue, in aminoDictionary.items():
-            
-            #print("probability of:",rowKey, rowValue,end=" ")
-            #print(colKey, colValue)
-
+        
             pairs = number_of_character_pairs_in_sequences(rowKey,colKey, sequence_list)
-            probability_of_pair = pairs/ total_possible_pairs
+            probability_of_pair = pairs / total_possible_pairs
 
             chain_list = list(chain.from_iterable(sequence_list))
 
             background_freq_a = chain_list.count(rowKey)/ len(chain_list)
             background_freq_b = chain_list.count(colKey)/ len(chain_list)
 
-            # print("probability of pair:",probability_of_pair)
-            # print("background freq A:",background_freq_a)
-            # print("background freq B:",background_freq_b)
-
             #prevent math errors. 
             if(probability_of_pair == 0 or background_freq_a == 0 or background_freq_b == 0):
                 score_matrix[rowValue][colValue] = 0
             else:
                 #6.25 scaling
-                result = 1/0.16 * log10(probability_of_pair/(background_freq_a * background_freq_b))
-
-                rounded = round_up(result)
-
-                score_matrix[rowValue][colValue] = rounded 
+                result = 1/0.05 * log10(probability_of_pair/(background_freq_a * background_freq_b))
+                #Round the result.
+                score_matrix[rowValue][colValue] = round_up(result)
 
     return score_matrix    
-
-
-
 
 def main():
 
     score_matrix = generate_scoring_matrix("DataFile1-1.txt")
-    
-    #print(score_matrix)
-    
+  
     #pretty print
     df = pd.DataFrame(score_matrix,columns=list(aminoDictionary.keys()),index=list(aminoDictionary.keys()))
 
